@@ -12,8 +12,8 @@ int main(int argc, const char* argv[])
 {
     int result = 0;
     compose the_compose {
-        "/etc/" PROJECT_NAME "/command.pipe" };
-    config the_config { "/etc/" PROJECT_NAME "/config.json", the_compose };
+        ETC_PATH PROJECT_NAME "/command.pipe" };
+    config the_config { ETC_PATH PROJECT_NAME "/config.json", the_compose };
     bool args = false;
     try
     {

@@ -11,7 +11,7 @@ add_custom_command(OUTPUT "bind.cpp"
     COMMAND ${CMAKE_COMMAND} -E echo ${include_list} | xargs -n 1 echo | xargs -i echo "#include \"widgets/{}.h\""  >> "bind.cpp"
     COMMAND ${CMAKE_COMMAND} -E echo "EMSCRIPTEN_BINDINGS(my_module)" >> "bind.cpp"
     COMMAND ${CMAKE_COMMAND} -E echo "{" >> "bind.cpp"
-    COMMAND ${CMAKE_COMMAND} -E echo ${include_list} | xargs -n 1 echo | xargs -i echo "    emscripten::function(\"{}_render\", &{}::render);" >> "bind.cpp"
+    COMMAND ${CMAKE_COMMAND} -E echo ${include_list} | xargs -n 1 echo | xargs -i echo "    emscripten::function(\"{}_render\", &{}::template render<false>);" >> "bind.cpp"
     COMMAND ${CMAKE_COMMAND} -E echo "}" >> "bind.cpp"
     DEPENDS ${widgets}
     VERBATIM
@@ -35,6 +35,5 @@ target_link_options("${CMAKE_PROJECT_NAME}" PRIVATE
 )
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PRIVATE
     CLIENT_SIDE
-    SESSION_TYPE=std::string
 )
 install(DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/wasm" DESTINATION ".")

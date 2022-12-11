@@ -8,7 +8,7 @@ foreach (widget ${widgets})
 endforeach()
 add_custom_command(OUTPUT "name.hpp"
     COMMAND ${CMAKE_COMMAND} -E echo "// auto generated" > "name.hpp"
-    COMMAND ${CMAKE_COMMAND} -E echo ${include_list} | xargs -n 1 echo | xargs -i echo "#include \"widgets/{}.h\"" >> "name.hpp"
+    COMMAND ${CMAKE_COMMAND} -E echo ${include_list} | xargs -n 1 echo | xargs -i echo "class {};" >> "name.hpp"
     COMMAND ${CMAKE_COMMAND} -E echo "template <class T> std::string get_name()" >> "name.hpp"
     COMMAND ${CMAKE_COMMAND} -E echo "{" >> "name.hpp"
     COMMAND ${CMAKE_COMMAND} -E echo "    if constexpr(std::is_same_v<T, void>) return \"\";" >> "name.hpp"
@@ -39,9 +39,5 @@ target_link_libraries("${CMAKE_PROJECT_NAME}-lib" PUBLIC
     "config"
     "compose"
     "jsonio"
-)
-target_compile_definitions("${CMAKE_PROJECT_NAME}-lib" PRIVATE
-    SERVER_SIDE
-    SESSION_TYPE=session*
 )
 add_dependencies("${CMAKE_PROJECT_NAME}-lib" "name_hpp")

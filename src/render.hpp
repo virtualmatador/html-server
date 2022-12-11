@@ -1,28 +1,19 @@
-#ifndef SRC_RENDER_HPP
-#define SRC_RENDER_HPP
-
-#include <sstream>
-#include <string>
+#ifndef SRC_RENDER_H
+#define SRC_RENDER_H
 
 #ifndef CLIENT_SIDE
+#include "name.hpp"
 #include "session.h"
-template <class T>
-std::string get_name();
+using SESSION_TYPE  = session*;
+#else
+#include <string>
+using SESSION_TYPE  = std::string;
 #endif
 
-template <class T, class ...P>
-std::string server_side(SESSION_TYPE the_session, P... v)
-{
-#ifndef CLIENT_SIDE
-    the_session->assets_.insert(get_name<T>());
-#endif
-    return T::render(the_session, std::forward<P>(v)...);
-}
-
-#ifndef CLIENT_SIDE
 template <class T, class ...P>
 std::string client_side(SESSION_TYPE the_session, P... v)
 {
+#ifndef CLIENT_SIDE
     std::ostringstream params;
     params << "'" << get_name<T>() << "', '" << the_session->id_ << "'";
     ((params << ", " << std::forward<P>(v)), ...);
@@ -30,10 +21,9 @@ std::string client_side(SESSION_TYPE the_session, P... v)
     Module['lazyLoad']()EOF" + params.str() + R"EOF();
 </script>
 )EOF";
+#else
+    return "";
+#endif
 }
 
-// Auto Generated
-#include "name.hpp"
-#endif
-
-#endif // SRC_RENDER_HPP
+#endif // SRC_RENDER_H

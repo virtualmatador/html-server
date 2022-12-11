@@ -27,6 +27,7 @@ configure_file("${CMAKE_SOURCE_DIR}/config.json" "config.json")
 add_executable("${CMAKE_PROJECT_NAME}" "main.cpp")
 target_link_libraries("${CMAKE_PROJECT_NAME}" "${CMAKE_PROJECT_NAME}-lib")
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PRIVATE
+    ETC_PATH="$<$<CONFIG:Debug>:/etc/dev/>$<$<CONFIG:Release>:/etc/>"
     PROJECT_NAME="${CMAKE_PROJECT_NAME}"
     PROJECT_VERSION="${CMAKE_PROJECT_VERSION}"
     ROOT="html"
